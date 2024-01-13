@@ -1,0 +1,1 @@
+To create an express porject and install type script follow this tutorial - https://blog.logrocket.com/how-to-set-up-node-typescript-express/
