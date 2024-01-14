@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.container {
+  width: 960px; /* Fixed width */
+  margin: 0 auto; /* Center the container */
+  height: 100%;
+  text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .container {
+      flex-direction: column;
+      padding: 20px;
+  }
+}
