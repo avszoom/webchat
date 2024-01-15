@@ -1,14 +1,14 @@
 import './App.css';
 import { Users } from './Users';
-import { SocketProvider } from './lib/SocketProvider';
+import { PeerProvider } from './lib/PeerProvider';
 
 function App() {
   return (
-    <SocketProvider>
+    <PeerProvider>
           <div className='container App-header'>
             <Users/>
           </div>
-    </SocketProvider>
+    </PeerProvider>
   );
 }
 

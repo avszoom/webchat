@@ -1,48 +1,57 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import http  from 'http';
-import { Server } from "socket.io";
-import { Socket } from "dgram";
 import { faker } from '@faker-js/faker';
+import { ExpressPeerServer} from 'peer';
+import cors from "cors";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+//http server running on port 3000
 const server = http.createServer(app);
-const io = new Server(server);
+// //web socket on same port
+// const io = new Server(server);
+
+const peerServer = ExpressPeerServer(server, {
+});
+
+app.use("/peerjs", peerServer);
+app.use(cors());
 
 let users = new Map;
 
-app.get('/', (req: Request, res: Response) => {
-  res.sendFile(__dirname + '/index.html');
+app.get('/users/:id', (req: Request, res: Response) => {
+  const userId = req.params.id;
+  const usersList = Array.from(users.keys()).filter((id) => id != userId);
+  res.send({
+    users: usersList.map((id) => users.get(id)),
+  });
+});
+
+app.get('/getUserId/:user', (req: Request, res: Response) => {
+  const userName = req.params.user;
+  const userId = Array.from(users.keys()).filter((id) => users.get(id) == userName);
+  res.send({
+    userId: userId,
+  });
 });
 
 function generateRandomName() {
   return faker.person.fullName(); // Generates a random name
 }
 
-io.on('connection', (socket) => {
-  console.log("New user connected ");
-  users.set(socket,generateRandomName());
-  users.forEach((value: boolean, key: Socket) => {
-    const userList = Array.from(users.keys()).filter((s) => s != socket);
-    socket.emit('user_list',{
-      users: userList.map((user) => users.get(user))
-    });
-    console.log("sending usersList server");
-  });
-
-  // on receiving chat messages
-  socket.on('chat message', (msg) => {
-  });
-
-  //on getting disconnected
-  socket.on('disconnect', () => {
-    users.delete(socket);
-    console.log("User got disconnected");
-  });
+peerServer.on('connection', (client) => { 
+  console.log("new user connected", client.getId()) 
+  users.set(client.getId(),generateRandomName());
 });
+
+peerServer.on('disconnect', (client) => {
+  console.log("user got disconnected");
+  users.delete(client.getId());
+});
+
 
 server.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
