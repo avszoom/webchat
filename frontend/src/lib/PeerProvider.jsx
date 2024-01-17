@@ -11,21 +11,22 @@ export const PeerProvider = ({ children }) => {
     let initialConnection = false;
     useEffect(() => {
         if(!initialConnection) {
-            const peer = new Peer({
+            const peer = new Peer('acd' + Math.floor(Math.random() * (9 - 1 + 1) + 1),{
                     host: 'localhost',
                     port: 3000,
                     path: '/peerjs',
                 });
             peer.on('open', (id) => {
                 console.log("my id",id);
+                console.log("my id",peer.id);
                 setPeerId(id);
             });
             setPeer(peer);
             initialConnection = true;
-            return () => {
-                // Cleanup code
-                peer.disconnect();
-            };
+            // return () => {
+            //     // Cleanup code
+            //     peer.disconnect();
+            // };
         }
     }, []);
 

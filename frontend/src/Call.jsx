@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePeer } from './lib/PeerProvider';
 
 export function Call({remoteUser}) {
     const {peer, peerId} = usePeer();
+    const videoRef = useRef();
     let callInitiated = false;
     useEffect(() => {
         if(remoteUser && !callInitiated) {
@@ -16,19 +17,29 @@ export function Call({remoteUser}) {
     },[]);
 
     function initiateCall(remoteUserId) {
+        console.log(remoteUserId);
         let getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         getUserMedia({video: true, audio: true}, function(stream) {
-            var call = peer.call(remoteUserId, stream);
+            var call = peer.call(remoteUserId[0], stream);
+            console.log(remoteUserId[0]);
             call.on('stream', function(remoteStream) {
                 // Show stream in some video/canvas element.
+                videoRef.current.srcObject = remoteStream;
+                videoRef.current.addEventListener('loadedmetadata', () => { // Play the video as it loads
+                    videoRef.current.play()
+                })
                 console.log('received remotestream');
             });
         }, function(err) {
         console.log('Failed to get local stream' ,err);
         });
-    }
+     };
 
     return <div>
             Calling {remoteUser}
+            <br></br>
+            <div style={{margin: '5px'}}>
+                <video width="700" height="340" controls ref={videoRef}></video>
+            </div>
         </div>
 }
