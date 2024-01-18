@@ -20,6 +20,11 @@ const peerServer = (0, peer_1.ExpressPeerServer)(server, {});
 app.use("/peerjs", peerServer);
 app.use((0, cors_1.default)());
 let users = new Map;
+app.get('/health', (req, res) => {
+    res.send({
+        health: "200",
+    });
+});
 app.get('/users/:id', (req, res) => {
     const userId = req.params.id;
     const usersList = Array.from(users.keys()).filter((id) => id != userId);

@@ -22,6 +22,12 @@ app.use(cors());
 
 let users = new Map;
 
+app.get('/health', (req: Request, res: Response) => {
+  res.send({
+    health: "200",
+  });
+});
+
 app.get('/users/:id', (req: Request, res: Response) => {
   const userId = req.params.id;
   const usersList = Array.from(users.keys()).filter((id) => id != userId);
