@@ -20,7 +20,7 @@ const peerServer = (0, peer_1.ExpressPeerServer)(server, {});
 app.use("/peerjs", peerServer);
 app.use((0, cors_1.default)());
 let users = new Map;
-app.get('/health', (req, res) => {
+app.get('/', (req, res) => {
     res.send({
         health: "200",
     });
@@ -53,3 +53,4 @@ peerServer.on('disconnect', (client) => {
 server.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
 });
+module.exports = app;

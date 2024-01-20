@@ -22,7 +22,7 @@ app.use(cors());
 
 let users = new Map;
 
-app.get('/health', (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => {
   res.send({
     health: "200",
   });
