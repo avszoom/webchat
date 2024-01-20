@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import http  from 'http';
 import { faker } from '@faker-js/faker';
@@ -7,7 +7,7 @@ import cors from "cors";
 
 dotenv.config();
 
-const app: Express = express();
+const app = express();
 const port = process.env.PORT || 3000;
 //http server running on port 3000
 const server = http.createServer(app);
@@ -22,13 +22,13 @@ app.use(cors());
 
 let users = new Map;
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (req, res) => {
   res.send({
     health: "200",
   });
 });
 
-app.get('/users/:id', (req: Request, res: Response) => {
+app.get('/users/:id', (req, res) => {
   const userId = req.params.id;
   const usersList = Array.from(users.keys()).filter((id) => id != userId);
   res.send({
@@ -36,7 +36,7 @@ app.get('/users/:id', (req: Request, res: Response) => {
   });
 });
 
-app.get('/getUserId/:user', (req: Request, res: Response) => {
+app.get('/getUserId/:user', (req, res) => {
   const userName = req.params.user;
   const userId = Array.from(users.keys()).filter((id) => users.get(id) == userName);
   res.send({
@@ -63,4 +63,3 @@ server.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
 
-module.exports = app;

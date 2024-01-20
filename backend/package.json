@@ -2,12 +2,11 @@
   "name": "webchat",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "src/index.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon src/index.ts",
-    "build": "rimraf dist && tsc",
-    "ts.check": "tsc --project tsconfig.json",
-    "add-build": "git add dist",
+    "start": "nodemon src/index.js",
+    "build": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -29,10 +28,5 @@
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
-  },
-  "pre-commit": [
-    "ts.check",
-    "build",
-    "add-build"
-]
+  }
 }
