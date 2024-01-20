@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePeer } from './lib/PeerProvider';
+import Paper from '@mui/material/Paper';
 
 export function Call({remoteUser}) {
-    const {peer, peerId} = usePeer();
+    const {peer} = usePeer();
     const videoRef = useRef();
     let callInitiated = false;
     useEffect(() => {
@@ -35,8 +36,8 @@ export function Call({remoteUser}) {
         });
      };
 
-    return <div>
-            Calling {remoteUser}
+    return <div className='mt-10'>
+            <Paper elevation={3}>Calling {remoteUser} </Paper>
             <br></br>
             <div style={{margin: '5px'}}>
                 <video width="700" height="340" controls ref={videoRef}></video>
